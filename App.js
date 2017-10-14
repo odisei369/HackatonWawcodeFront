@@ -19,7 +19,7 @@ import { SocialIcon } from 'react-native-elements'
 import { Image } from 'react-native'
 import { Card, ListItem} from 'react-native-elements'
 import {Grid, Col, Row} from 'react-native-elements';
-import { Icon } from 'react-native-elements'
+import { Icon } from 'react-native-elements';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
@@ -29,23 +29,52 @@ const instructions = Platform.select({
 });
 
 export default class App extends Component<{}> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoading: true
+    }
+  }
+  componentDidMount() {
+    return fetch('http://192.168.56.1:8000/month-day/1/1')
+      // .then((response) => response.json())
+      // .then((responseJson) => {
+      //   this.setState({
+      //     isLoading: false,
+      //     eventsFromServer: responseJson,
+      //   }, function() {
+      //     //document.querySelector('#mytext').innerHTML = state.eventsFromServer;
+      //   });
+      //   console.log('oooooooook!!!!!');
+       //})
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
   render() {
+    if (this.state.isLoading) {
+      return (
+        <View style={styles.container}>
+          <Header backgroundColor="#FFD600"
+                  centerComponent={{ text: 'Loading data...', style: { color: '#fff' } }}
+          />
+        </View>
+      );
+    }
     return (
       <View style={styles.container}>
-        <Header backgroundColor="black"
+        <Header backgroundColor="#FFD600"
                 centerComponent={{ text: 'MY TITLE', style: { color: '#fff' } }}
         />
-        <View style={styles.container_row}>
-          <View style={styles.container_arrow}><Icon
-            name='navigate-before'
-            color='#00aced' />
-          </View>
-          <View style={styles.container}>
-            <Card>
-              <Text >
-                The idea with React Native Elements is more about component structure than actual design.
-                Loremdfgdfg;jkdfgkljn dfgjkldfgklj dfgjdfklgj
+          <Card>
+              <Text id="mytext" style={{ marginBottom:40}}>
+                Pobrane
               </Text>
+            <Button
+              raised
+              icon={{name: 'cached'}}
+              title='Inne wydarżenie' />
             </Card>
             <Card title='Share with friends'>
               <View style={styles.container_row}>
@@ -64,11 +93,6 @@ export default class App extends Component<{}> {
               </View>
             </Card>
           </View>
-          <View style={styles.container_arrow}><Icon
-            name='navigate-next'
-            color='#00aced' /></View>
-        </View>
-      </View>
     );
   }
 }
@@ -78,7 +102,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'red',
+    backgroundColor: '#FF1100',
   },
   container_arrow: {
     flexShrink: 5,
